@@ -40,7 +40,7 @@ Redmine::Plugin.register :redmine_service_contract do
   name 'Redmine Service Contract'
   author 'LS MARK'
   description 'This is a plugin for maintain service contract'
-  version '1.0.0'
+  version '1.0.1'
   url 'https://daxonet.com'
   author_url 'https://daxonet.com/about'
 end

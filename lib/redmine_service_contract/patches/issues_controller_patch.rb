@@ -38,14 +38,17 @@ module RedmineServicesContract
 
           def build_new_issue_from_params_with_services_contract
             build_new_issue_from_params_without_services_contract
+            
             return if @issue.blank?
 
             @issue.build_service_contracts_issue unless @issue.service_contracts_issue
 
-            if User.current.allowed_to?(:view_service_contracts, @project)
-              default_service_contract = ServiceContract.where(project_id: @issue.project_id).where(is_default: true).first
-              @issue.service_contracts_issue.service_contract_id = default_service_contract.id if default_service_contract
-              @issue.service_contracts_issue.use_spent_hours = default_service_contract.default_use_spent_hours if default_service_contract
+            if @issue.service_contract.nil?
+              default_service_contract = @project.default_service_contracts(@issue.tracker)
+              unless default_service_contract.nil?
+                @issue.service_contracts_issue.service_contract_id = default_service_contract.id if default_service_contract
+                @issue.service_contracts_issue.use_spent_hours = default_service_contract.default_use_spent_hours if default_service_contract
+              end
             end
           end
 
